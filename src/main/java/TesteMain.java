@@ -5,7 +5,6 @@ public class TesteMain {
 
     static int opcao;
     static ArrayList<Ator> arrayAtor = new ArrayList<>();
-    static ArrayList<Diretor> arrayDiretor = new ArrayList<>();
     static Scanner sc = new Scanner(System.in);
 
 
@@ -155,23 +154,20 @@ public class TesteMain {
         System.out.println("Digite o CPF do Diretor:");
         cpf = sc.nextLine();
 
-        Diretor diretor = new Diretor(nome,cpf);
-        arrayDiretor.add(diretor);
         System.out.println("Deseja associar a algum filme?");
         System.out.println("1 - Sim / 0 - Não");
         opcao = Integer.parseInt(sc.nextLine());
         if(opcao == 1){
-            associarDiretor(diretor);
+            associarDiretor(ServicosDiretor.cadastrarDiretor(nome,cpf));
         }
         else {
+            ServicosDiretor.cadastrarDiretor(nome,cpf);
             System.out.println("Diretor cadastro, sem associação de filme.");
         }
     }
 
     public static void listarDiretor(){
-        for (Diretor d: arrayDiretor) {
-            System.out.println("Nome: "+ d.getNome()+" CPF: "+d.getCpf());
-        }
+        ServicosDiretor.listarDiretor();
     }
 
     public static void deletarDiretor(){
@@ -180,14 +176,9 @@ public class TesteMain {
         System.out.println("Digite o nome do Diretor para excluir da lista: ");
         nomeDiretor = sc.nextLine();
 
-        for (Diretor d: arrayDiretor) {
-            if (d.getNome().equals(nomeDiretor)){
-                arrayDiretor.remove(d);
-                System.out.println("O Diretor "+nomeDiretor +" foi excluido da lista.");
-                return;
-            }
+        if (!ServicosDiretor.deletarFilme(nomeDiretor)){
+            System.out.println("Usuário não encontrado.");
         }
-        System.out.println("Usuário não encontrado.");
     }
 
     public static void menuAtor(){
@@ -231,15 +222,14 @@ public class TesteMain {
         nome = sc.nextLine();
         System.out.println("Digite o CPF do ator: ");
         cpf = sc.nextLine();
-
-        Ator ator = new Ator(nome,cpf);
-        arrayAtor.add(ator);
         System.out.println("Deseja associar a algum filme?");
+        System.out.println("1 - Sim / 0 - Não");
         opcao = Integer.parseInt(sc.nextLine());
         if(opcao == 1){
-            associarAtor(ator);
+            associarAtor(ServicosAtor.cadastrarAtor(nome,cpf));
         }
         else {
+            ServicosAtor.cadastrarAtor(nome,cpf);
             System.out.println("Diretor cadastro, sem associação de filme.");
         }
 
@@ -247,10 +237,7 @@ public class TesteMain {
     }
 
     public static void listarAtor(){
-        for (Ator ator: arrayAtor) {
-            System.out.println("Nome: "+ator.getNome() + " CPF: "+ator.getCpf());
-            System.out.println();
-        }
+        ServicosAtor.listarAtor();
     }
 
     public static void deletarAtor(){
@@ -259,14 +246,9 @@ public class TesteMain {
         System.out.println("Digite o nome do ator que deseja excluir: ");
         nomeAtor = sc.nextLine();
 
-        for (Ator ator: arrayAtor) {
-            if (ator.getNome().equals(nomeAtor)){
-                System.out.println("O ator do nome: "+ator.getNome()+ " e do CPF: "+ator.getCpf() + " vai foi excluído.");
-                arrayAtor.remove(ator);
-                return;
-            }
+        if (!ServicosAtor.deletarAtor(nomeAtor)){
+            System.out.println("Usuário não encontrado.");
         }
-        System.out.println("Ator não encontrado.");
     }
 
     public static void associarDiretor(Diretor diretor){
